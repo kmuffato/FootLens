@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "PROJECT_NAME": "FootLens",
+  "ARCHITECTURE_FILE_NAME": "ARCHITECTURE.md",
+  "TARGET_HARNESS": [
+    "Cursor",
+    "VSCode"
+  ],
+  "roles": {
+    "architect": {
+      "slug": "footlens-architect",
+      "fallbackSlug": "footlens-worker"
+    },
+    "orchestrator": {
+      "slug": "footlens-orchestrator",
+      "fallbackSlug": "footlens-worker"
+    },
+    "coder": {
+      "slug": "footlens-coder",
+      "fallbackSlug": "footlens-worker"
+    },
+    "worker": {
+      "slug": "footlens-worker",
+      "fallbackSlug": "footlens-worker"
+    },
+    "designer": {
+      "slug": "footlens-designer",
+      "fallbackSlug": "footlens-worker"
+    },
+    "code-reviewer": {
+      "slug": "footlens-code-reviewer",
+      "fallbackSlug": "footlens-worker"
+    },
+    "verifier": {
+      "slug": "footlens-verifier",
+      "fallbackSlug": "footlens-worker"
+    }
+  },
+  "budgets": {
+    "maxRepairCycles": 2,
+    "maxRunMinutes": 60,
+    "defaultParallelWriters": 1
+  },
+  "connectorPolicy": {
+    "git": "task-scoped",
+    "ci": "verify",
+    "database": "disposable-only-for-agents",
+    "sourceFeeds": "admitted-read-only",
+    "production": "explicit-task-authority",
+    "messages": "disabled",
+    "realBetting": "disabled"
+  }
+}

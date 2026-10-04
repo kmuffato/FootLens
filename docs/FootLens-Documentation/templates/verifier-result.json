@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "taskId": "FL-001",
+  "runId": null,
+  "commit": null,
+  "inputHashes": {},
+  "status": "Blocked",
+  "checks": [
+    {
+      "name": "application-build",
+      "status": "Blocked",
+      "command": null,
+      "exitCode": null,
+      "evidencePath": null,
+      "sha256": null,
+      "reason": "Template; no application checks have run"
+    }
+  ],
+  "reviewFindings": [],
+  "verifiedAtUtc": null
+}

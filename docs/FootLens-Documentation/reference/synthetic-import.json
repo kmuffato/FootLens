@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "source": "FootLensSynthetic",
+  "notice": "Invented records for development tests only; not actual football results.",
+  "availabilityPolicy": "SyntheticStrictEvidence",
+  "fixtures": [
+    {
+      "provider_fixture_key": "demo-1",
+      "league_code": "DEMO",
+      "season_code": "2024",
+      "home_team": "Demo Albion",
+      "away_team": "Demo United",
+      "kickoff_utc": "2024-08-01T14:00:00Z",
+      "finished_at": "2024-08-01T16:00:00Z",
+      "available_at": "2024-08-01T16:05:00Z",
+      "status": "Completed",
+      "home_goals": 2,
+      "away_goals": 1
+    },
+    {
+      "provider_fixture_key": "demo-2",
+      "league_code": "DEMO",
+      "season_code": "2024",
+      "home_team": "Demo United",
+      "away_team": "Demo Albion",
+      "kickoff_utc": "2024-08-08T14:00:00Z",
+      "status": "Scheduled",
+      "home_goals": null,
+      "away_goals": null
+    }
+  ]
+}

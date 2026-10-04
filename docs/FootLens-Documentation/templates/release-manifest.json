@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "releaseVersion": null,
+  "codeCommit": null,
+  "buildUtc": null,
+  "runtime": {},
+  "dependenciesLockHash": null,
+  "databaseSchemaVersion": null,
+  "migrationHash": null,
+  "artifacts": [],
+  "approvedModels": [],
+  "approvedConfigs": [],
+  "evidence": {
+    "testReport": null,
+    "statisticalReports": [],
+    "restoreReport": null,
+    "upgradeReport": null,
+    "securityReport": null
+  },
+  "deploymentAuthority": null,
+  "status": "Draft"
+}

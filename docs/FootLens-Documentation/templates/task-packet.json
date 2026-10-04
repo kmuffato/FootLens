@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "taskId": "FL-001",
+  "revision": 1,
+  "status": "Ready",
+  "goal": "Bootstrap buildable FootLens foundation",
+  "baseCommit": null,
+  "requirements": [
+    "R18"
+  ],
+  "dependencies": [],
+  "read": [
+    "AGENTS.md",
+    "ARCHITECTURE.md",
+    "docs/BOOTSTRAP.md",
+    "TASK_BREAKDOWN.md"
+  ],
+  "allowedPaths": [
+    "src/",
+    "tests/",
+    "scripts/",
+    "docs/",
+    "state/",
+    ".github/",
+    "*.props",
+    "*.json",
+    "*.slnx"
+  ],
+  "forbidden": [
+    "production writes",
+    "unapproved dependencies",
+    "scope expansion"
+  ],
+  "acceptance": [
+    "Build passes",
+    "Authenticated health/API skeleton",
+    "Real PostgreSQL test route",
+    "Verifier fails when required gate absent"
+  ],
+  "fixtures": [],
+  "commands": [
+    "restore",
+    "build",
+    "unit",
+    "integration",
+    "architecture"
+  ],
+  "connectors": {
+    "git": "current-task-branch",
+    "database": "unique-disposable-database"
+  },
+  "budget": {
+    "maxRepairCycles": 2,
+    "maxMinutes": 60
+  },
+  "evidenceDirectory": "evidence/FL-001/"
+}

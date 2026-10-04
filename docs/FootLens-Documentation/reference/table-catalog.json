@@ -1,0 +1,154 @@
+[
+  {
+    "table": "catalog.league",
+    "mutable": true
+  },
+  {
+    "table": "catalog.season",
+    "mutable": false
+  },
+  {
+    "table": "catalog.team",
+    "mutable": true
+  },
+  {
+    "table": "catalog.season_team",
+    "mutable": false
+  },
+  {
+    "table": "catalog.source",
+    "mutable": true
+  },
+  {
+    "table": "catalog.bookmaker",
+    "mutable": true
+  },
+  {
+    "table": "catalog.referee",
+    "mutable": true
+  },
+  {
+    "table": "catalog.fixture",
+    "mutable": false
+  },
+  {
+    "table": "catalog.fixture_revision",
+    "mutable": false
+  },
+  {
+    "table": "catalog.entity_alias",
+    "mutable": false
+  },
+  {
+    "table": "catalog.market",
+    "mutable": false
+  },
+  {
+    "table": "ingest.batch",
+    "mutable": true
+  },
+  {
+    "table": "ingest.observation",
+    "mutable": false
+  },
+  {
+    "table": "ingest.quality_issue",
+    "mutable": false
+  },
+  {
+    "table": "ingest.snapshot",
+    "mutable": false
+  },
+  {
+    "table": "ingest.snapshot_observation",
+    "mutable": false
+  },
+  {
+    "table": "model.config_version",
+    "mutable": false
+  },
+  {
+    "table": "model.model_version",
+    "mutable": false
+  },
+  {
+    "table": "model.calibration_version",
+    "mutable": false
+  },
+  {
+    "table": "forecast.distribution",
+    "mutable": false
+  },
+  {
+    "table": "forecast.prediction",
+    "mutable": false
+  },
+  {
+    "table": "forecast.market_probability",
+    "mutable": false
+  },
+  {
+    "table": "markets.odds_group",
+    "mutable": false
+  },
+  {
+    "table": "markets.quote",
+    "mutable": false
+  },
+  {
+    "table": "backtest.run",
+    "mutable": true
+  },
+  {
+    "table": "backtest.fold",
+    "mutable": false
+  },
+  {
+    "table": "backtest.position",
+    "mutable": false
+  },
+  {
+    "table": "backtest.ledger_entry",
+    "mutable": false
+  },
+  {
+    "table": "backtest.metric",
+    "mutable": false
+  },
+  {
+    "table": "governance.approval_event",
+    "mutable": false
+  },
+  {
+    "table": "governance.readiness_event",
+    "mutable": false
+  },
+  {
+    "table": "governance.audit_event",
+    "mutable": false
+  },
+  {
+    "table": "ops.job",
+    "mutable": true
+  },
+  {
+    "table": "ops.job_attempt",
+    "mutable": true
+  },
+  {
+    "table": "ops.outbox",
+    "mutable": true
+  },
+  {
+    "table": "ops.inbox",
+    "mutable": false
+  },
+  {
+    "table": "ops.schedule",
+    "mutable": true
+  },
+  {
+    "table": "ops.alert",
+    "mutable": true
+  }
+]

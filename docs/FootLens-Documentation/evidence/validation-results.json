@@ -1,0 +1,44 @@
+{
+  "scope": "Documentation and reference example checks only",
+  "status": "Passed",
+  "checks": [
+    {
+      "name": "Internal links",
+      "status": "Passed",
+      "detail": "82 internal file links resolved; remote URLs and rendered anchors not checked"
+    },
+    {
+      "name": "JSON and packet fields",
+      "status": "Passed",
+      "detail": "10 JSON documents parse; task packet required fields checked"
+    },
+    {
+      "name": "Backlog traceability",
+      "status": "Passed",
+      "detail": "34 tasks, 32 Must, acyclic dependencies; all R01\u2013R20 covered with acceptance/tests"
+    },
+    {
+      "name": "SQL proposal static references",
+      "status": "Passed",
+      "detail": "38 table declarations, 51 FK references and common audit fields checked statically; SQL NOT executed or parsed by PostgreSQL"
+    },
+    {
+      "name": "Markdown inventory",
+      "status": "Passed",
+      "detail": "81 Markdown files, 6 Mermaid blocks; fences and expected prompt/loop/ADR counts checked; Mermaid not rendered"
+    },
+    {
+      "name": "Mathematical examples",
+      "status": "Passed",
+      "detail": "High-precision odds/EV/Poisson/Brier/log-loss examples, five settlement vectors and conditional-period normalization verified; no C# engine tested"
+    }
+  ],
+  "notPerformed": [
+    "C# compilation/application tests",
+    "PostgreSQL DDL execution/provider tests",
+    "Rendered Mermaid validation",
+    "Empirical model/backtest validation",
+    "Deployment/restore rehearsal",
+    "Independent external reviewer"
+  ]
+}

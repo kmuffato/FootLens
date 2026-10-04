@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "project": "FootLens",
+  "documentationVersion": "1.0",
+  "revision": 1,
+  "phase": "M0",
+  "implementationStatus": "NotStarted",
+  "activeTask": null,
+  "nextTask": "FL-001",
+  "completedTasks": [],
+  "blockedTasks": [],
+  "defaultHarnesses": [
+    "Cursor",
+    "VSCode"
+  ],
+  "lastVerifiedCommit": null
+}

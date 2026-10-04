@@ -1,0 +1,767 @@
+{
+  "schemaVersion": 1,
+  "tasks": [
+    {
+      "id": "FL-001",
+      "milestone": "M0",
+      "epic": "Foundation",
+      "feature": "Bootstrap solution and verifier",
+      "story": "As an implementer I can build and verify the selected stack from a clean checkout.",
+      "dependencies": [],
+      "requirements": [
+        "R18"
+      ],
+      "implementationTasks": [
+        "Create projects/dependency rules",
+        "pin SDK/packages",
+        "CI restore/build/test commands",
+        "create authenticated skeleton and disposable PostgreSQL path."
+      ],
+      "acceptance": "Clean build passes; verifier exits nonzero for missing required suite; no app credentials in repository.",
+      "tests": "T01 build and negative verifier; T02 architecture boundary",
+      "priority": "Must",
+      "status": "NotStarted"
+    },
+    {
+      "id": "FL-002",
+      "milestone": "M0",
+      "epic": "Persistence",
+      "feature": "Initial EF schema and migrations",
+      "story": "As an operator I can initialise and upgrade the database reproducibly.",
+      "dependencies": [
+        "FL-001"
+      ],
+      "requirements": [
+        "R17"
+      ],
+      "implementationTasks": [
+        "Map core catalog/ingest/ops entities",
+        "generate migration",
+        "roles and constraints",
+        "fresh/N-1 migration harness."
+      ],
+      "acceptance": "Fresh Postgres schema matches required constraints; runtime cannot DDL; migration evidence stored.",
+      "tests": "T03 fresh DB / N-1 migration / constraint rejection",
+      "priority": "Must",
+      "status": "NotStarted"
+    },
+    {
+      "id": "FL-003",
+      "milestone": "M0",
+      "epic": "Operations",
+      "feature": "Durable job and outbox foundation",
+      "story": "As a user my accepted work survives process restart.",
+      "dependencies": [
+        "FL-002"
+      ],
+      "requirements": [
+        "R13",
+        "R18"
+      ],
+      "implementationTasks": [
+        "Implement queue/lease/fencing, attempt/checkpoint records, outbox/inbox and loop driver state schema."
+      ],
+      "acceptance": "Worker crash before/after commit has one effect; expired worker cannot commit; attempts bounded.",
+      "tests": "T04 kill-worker / duplicate delivery / stale lease",
+      "priority": "Must",
+      "status": "NotStarted"
+    },
+    {
+      "id": "FL-004",
+      "milestone": "M1",
+      "epic": "Ingestion",
+      "feature": "Canonical match import",
+      "story": "As an analyst I can import matches with row-level provenance.",
+      "dependencies": [
+        "FL-002",
+        "FL-003"
+      ],
+      "requirements": [
+        "R01"
+      ],
+      "implementationTasks": [
+        "Stream CSV/JSON",
+        "preview counts",
+        "hashes and chunks",
+        "activate only complete batches",
+        "canonical sample fixtures."
+      ],
+      "acceptance": "Quoted/newline/BOM import works; identical request idempotent; cancellation hides partial facts.",
+      "tests": "T05 bounded CSV, idempotency and partial batch",
+      "priority": "Must",
+      "status": "NotStarted"
+    },
+    {
+      "id": "FL-005",
+      "milestone": "M1",
+      "epic": "Catalog",
+      "feature": "Reviewed identities and aliases",
+      "story": "As an analyst I can resolve source names without corrupting histories.",
+      "dependencies": [
+        "FL-004"
+      ],
+      "requirements": [
+        "R02"
+      ],
+      "implementationTasks": [
+        "Canonical leagues/seasons/teams",
+        "team/referee/bookmaker/market alias registry",
+        "decision API and quarantine."
+      ],
+      "acceptance": "Ambiguous alias stays quarantined; reviewed remapping yields new version; old snapshots unchanged.",
+      "tests": "T06 alias ambiguity/correction/version",
+      "priority": "Must",
+      "status": "NotStarted"
+    },
+    {
+      "id": "FL-006",
+      "milestone": "M1",
+      "epic": "Ingestion",
+      "feature": "As-of snapshots and data quality",
+      "story": "As an analyst I can reproduce what was knowable at a cutoff.",
+      "dependencies": [
+        "FL-005"
+      ],
+      "requirements": [
+        "R03",
+        "R10"
+      ],
+      "implementationTasks": [
+        "Revision selector, source precedence, manifests, timing modes, metric DQ and hash canonicalization."
+      ],
+      "acceptance": "Future/late revisions cannot change prior snapshot; missing data remains unavailable; same semantic input hashes deterministically.",
+      "tests": "T07 no-look-ahead future-mutation suite",
+      "priority": "Must",
+      "status": "NotStarted"
+    },
+    {
+      "id": "FL-007",
+      "milestone": "M1",
+      "epic": "Modeling",
+      "feature": "Analytic Poisson baseline",
+      "story": "As an analyst I can compute an explainable first score distribution.",
+      "dependencies": [
+        "FL-001",
+        "FL-006"
+      ],
+      "requirements": [
+        "R04",
+        "R07"
+      ],
+      "implementationTasks": [
+        "Pure PMF/tails, matrix and projector",
+        "analytic fixture",
+        "baseline league rates with cold-start disclosure."
+      ],
+      "acceptance": "Analytic means1.2/.8 and complements pass; tails bounded; unsupported domain errors explicit.",
+      "tests": "T08 independent analytic/oracle vectors",
+      "priority": "Must",
+      "status": "NotStarted"
+    },
+    {
+      "id": "FL-008",
+      "milestone": "M1",
+      "epic": "Forecasts",
+      "feature": "Immutable forecast journal",
+      "story": "As an analyst I can retrieve the exact forecast shown earlier.",
+      "dependencies": [
+        "FL-003",
+        "FL-006",
+        "FL-007"
+      ],
+      "requirements": [
+        "R04",
+        "R10"
+      ],
+      "implementationTasks": [
+        "Persist distribution, prediction, projected markets and audit",
+        "fenced/idempotent creation",
+        "explain endpoint."
+      ],
+      "acceptance": "No probability displayed before commit; correction cannot update journal; request repeat resolves original result.",
+      "tests": "T09 append-only role/transaction/fencing",
+      "priority": "Must",
+      "status": "NotStarted"
+    },
+    {
+      "id": "FL-009",
+      "milestone": "M1",
+      "epic": "Desktop",
+      "feature": "Match Center vertical slice",
+      "story": "As a user I can import/select a fixture and view its saved forecast.",
+      "dependencies": [
+        "FL-004",
+        "FL-008"
+      ],
+      "requirements": [
+        "R16"
+      ],
+      "implementationTasks": [
+        "WinForms shell/presenter/API client",
+        "fixture context",
+        "loading/cancel/offline errors",
+        "number badges."
+      ],
+      "acceptance": "Keyboard import\u2192fixture\u2192journal journey succeeds; stale async response cannot overwrite selection.",
+      "tests": "T10 Windows journey and presenter cancellation",
+      "priority": "Must",
+      "status": "NotStarted"
+    },
+    {
+      "id": "FL-010",
+      "milestone": "M2",
+      "epic": "Markets",
+      "feature": "Odds ingestion and normalization",
+      "story": "As an analyst I can compare complete compatible odds.",
+      "dependencies": [
+        "FL-005",
+        "FL-006"
+      ],
+      "requirements": [
+        "R05",
+        "R06"
+      ],
+      "implementationTasks": [
+        "Formats conversion, group identity/freshness, proportional de-vig, manual entry and original text."
+      ],
+      "acceptance": "2/3.3/4 yields exact139/132 book sum and66/139 home fair; incomplete groups rejected.",
+      "tests": "T11 odds vectors and semantic mismatch",
+      "priority": "Must",
+      "status": "NotStarted"
+    },
+    {
+      "id": "FL-011",
+      "milestone": "M2",
+      "epic": "Legacy",
+      "feature": "Legacy migration inventory",
+      "story": "As an owner I can see what was preserved or deliberately changed.",
+      "dependencies": [
+        "FL-006",
+        "FL-007"
+      ],
+      "requirements": [
+        "R19"
+      ],
+      "implementationTasks": [
+        "Recover frozen old assessment/formula inventory",
+        "map every Expected entry and all families",
+        "capture full golden inputs",
+        "label unsupported."
+      ],
+      "acceptance": "620 Expected entries individually accounted for against actual source; parity claims only for complete fixtures; audit totals reconciled.",
+      "tests": "T12 coverage manifest/golden source provenance",
+      "priority": "Must",
+      "status": "NotStarted"
+    },
+    {
+      "id": "FL-012",
+      "milestone": "M2",
+      "epic": "Markets",
+      "feature": "Dependency graph and invariant verifier",
+      "story": "As an analyst I get internally consistent derived markets.",
+      "dependencies": [
+        "FL-007",
+        "FL-010"
+      ],
+      "requirements": [
+        "R07"
+      ],
+      "implementationTasks": [
+        "Typed DAG, stable topo execution, cache identities, failure propagation and hard/soft diagnostics."
+      ],
+      "acceptance": "Cycles rejected; double chance sums2; BTTS subset bounds and monotone totals pass; quote changes only invalidate price descendants.",
+      "tests": "T13 graph cycle/cache/invariant property suite",
+      "priority": "Must",
+      "status": "NotStarted"
+    },
+    {
+      "id": "FL-013",
+      "milestone": "M2",
+      "epic": "Markets",
+      "feature": "Value and explanation workspace",
+      "story": "As an analyst I can inspect value delta and net payoff assumptions.",
+      "dependencies": [
+        "FL-008",
+        "FL-010",
+        "FL-012",
+        "FL-009"
+      ],
+      "requirements": [
+        "R06"
+      ],
+      "implementationTasks": [
+        "Sign convention, costs/freshness checks, Odds and Value Lab UI, distributions and uncertainty placeholder state."
+      ],
+      "acceptance": "Delta/EV fixture correct; percent points distinct; incompatible lines cannot compare; unavailable bands labelled.",
+      "tests": "T14 value/cost arithmetic and UI semantics",
+      "priority": "Must",
+      "status": "NotStarted"
+    },
+    {
+      "id": "FL-014",
+      "milestone": "M2",
+      "epic": "Backtesting",
+      "feature": "Settlement engine",
+      "story": "As a simulator I settle whole, half and quarter markets correctly.",
+      "dependencies": [
+        "FL-007",
+        "FL-010"
+      ],
+      "requirements": [
+        "R07",
+        "R12"
+      ],
+      "implementationTasks": [
+        "Quarter-unit keys, win/push/half states, void/postponement rules, outcome evidence and correction events."
+      ],
+      "acceptance": "Over2.75 at3 is half-win; -0.25 draw half-loss; exhaustive partitions and correction reversal pass.",
+      "tests": "T15 settlement table/oracle",
+      "priority": "Must",
+      "status": "NotStarted"
+    },
+    {
+      "id": "FL-015",
+      "milestone": "M3",
+      "epic": "Backtesting",
+      "feature": "Chronological replay",
+      "story": "As an analyst I run rolling tests without future information.",
+      "dependencies": [
+        "FL-006",
+        "FL-008",
+        "FL-014"
+      ],
+      "requirements": [
+        "R11"
+      ],
+      "implementationTasks": [
+        "Frozen RunSpec, inner/outer splits, weekly refits, checkpoints, held-out labels and result export."
+      ],
+      "acceptance": "Future mutations leave prior decisions unchanged; cancelled/resumed run equals uninterrupted run; modes separate.",
+      "tests": "T16 rolling/replay/leakage/resume",
+      "priority": "Must",
+      "status": "NotStarted"
+    },
+    {
+      "id": "FL-016",
+      "milestone": "M3",
+      "epic": "Backtesting",
+      "feature": "Paper ledger and staking",
+      "story": "As an analyst I simulate executable decisions and exposure.",
+      "dependencies": [
+        "FL-014",
+        "FL-015"
+      ],
+      "requirements": [
+        "R12"
+      ],
+      "implementationTasks": [
+        "Fixed/proportional/fractional Kelly, price selection, simultaneous reservations, commission/liquidity/limits and reversals."
+      ],
+      "acceptance": "No borrowing unsettled winnings; same-time order invariant; exactly one logical ledger effect; all money reconciles.",
+      "tests": "T17 ledger/batch exposure/cost/reversal",
+      "priority": "Must",
+      "status": "NotStarted"
+    },
+    {
+      "id": "FL-017",
+      "milestone": "M3",
+      "epic": "Modeling",
+      "feature": "Time-decayed DC fitting",
+      "story": "As an analyst I compare a fitted goal candidate with baseline.",
+      "dependencies": [
+        "FL-007",
+        "FL-015"
+      ],
+      "requirements": [
+        "R07",
+        "R11"
+      ],
+      "implementationTasks": [
+        "Penalised fit/constraints/gradient, convergence and fallback diagnostics",
+        "versioned candidate search."
+      ],
+      "acceptance": "Independent gradient checks; \u03c4 positivity; failed fit does not replace approved model; no held-out tuning.",
+      "tests": "T18 fitting gradients/feasibility",
+      "priority": "Must",
+      "status": "NotStarted"
+    },
+    {
+      "id": "FL-018",
+      "milestone": "M3",
+      "epic": "Modeling",
+      "feature": "Coherent calibration and uncertainty",
+      "story": "As an analyst I see calibrated probabilities with meaningful bands.",
+      "dependencies": [
+        "FL-017",
+        "FL-012"
+      ],
+      "requirements": [
+        "R04",
+        "R11"
+      ],
+      "implementationTasks": [
+        "OOS atomic calibration,200-draw block bootstrap, mixture, quantiles and interval failure reporting."
+      ],
+      "acceptance": "All draws/mixture coherent;\u2265180 successful draws gate; count intervals distinct from probability bands.",
+      "tests": "T19 calibration/uncertainty/coherence",
+      "priority": "Must",
+      "status": "NotStarted"
+    },
+    {
+      "id": "FL-019",
+      "milestone": "M3",
+      "epic": "Backtesting",
+      "feature": "Evaluation and reports",
+      "story": "As an owner I compare proper scores and conditional paper performance.",
+      "dependencies": [
+        "FL-015",
+        "FL-016",
+        "FL-018"
+      ],
+      "requirements": [
+        "R11",
+        "R12"
+      ],
+      "implementationTasks": [
+        "Brier/logloss/reliability/ECE, paired intervals, ROI/drawdown/CLV, report artifacts and cohorts."
+      ],
+      "acceptance": "Hand-computed metric fixtures pass; empty cohorts null; reports expose assumptions, exclusions and all tried candidates.",
+      "tests": "T20 metric/report reconciliation",
+      "priority": "Must",
+      "status": "NotStarted"
+    },
+    {
+      "id": "FL-020",
+      "milestone": "M4",
+      "epic": "Modeling",
+      "feature": "Conditional periods",
+      "story": "As a user I inspect half and HT/FT markets reconciled to FT.",
+      "dependencies": [
+        "FL-017",
+        "FL-018"
+      ],
+      "requirements": [
+        "R08"
+      ],
+      "implementationTasks": [
+        "Period shares/prior, conditional allocation and HT/FT projection",
+        "coverage gates."
+      ],
+      "acceptance": "Summing allocations returns FT; unsupported halves unavailable; no half independence shortcut.",
+      "tests": "T21 period marginalization",
+      "priority": "Must",
+      "status": "NotStarted"
+    },
+    {
+      "id": "FL-021",
+      "milestone": "M4",
+      "epic": "Modeling",
+      "feature": "Secondary counts and SOT",
+      "story": "As a user I inspect shots/SOT/corners/cards/fouls/offsides honestly.",
+      "dependencies": [
+        "FL-017",
+        "FL-018"
+      ],
+      "requirements": [
+        "R08"
+      ],
+      "implementationTasks": [
+        "NB fit/convolution, Poisson fallback, binomial SOT thinning, referee shrinkage and definition registry."
+      ],
+      "acceptance": "SOT\u2264shots atoms; NB totals by convolution; each missing family independently unavailable with reasons.",
+      "tests": "T22 NB oracle/thinning/coverage",
+      "priority": "Must",
+      "status": "NotStarted"
+    },
+    {
+      "id": "FL-022",
+      "milestone": "M4",
+      "epic": "Statistics",
+      "feature": "Team league referee summaries",
+      "story": "As a user I understand historical performance and source coverage.",
+      "dependencies": [
+        "FL-006",
+        "FL-009"
+      ],
+      "requirements": [
+        "R09"
+      ],
+      "implementationTasks": [
+        "Team perspectives, unique samples, ranks/ties/points, referee histories, recorded-xG distinction."
+      ],
+      "acceptance": "Each fixture counted once; last-five overlap disclosed; n=0 unavailable; two league views independent.",
+      "tests": "T23 summary/tie/cutoff fixtures",
+      "priority": "Must",
+      "status": "NotStarted"
+    },
+    {
+      "id": "FL-023",
+      "milestone": "M4",
+      "epic": "Desktop",
+      "feature": "Complete analysis workspaces",
+      "story": "As a user I navigate all specified analysis workflows.",
+      "dependencies": [
+        "FL-013",
+        "FL-019",
+        "FL-020",
+        "FL-021",
+        "FL-022"
+      ],
+      "requirements": [
+        "R16"
+      ],
+      "implementationTasks": [
+        "Finish market ladders, model lab, journal, data manager, profiles/help",
+        "exports and explanatory drill-downs."
+      ],
+      "acceptance": "All11 analysis workspaces pass scripted journeys with loading/empty/partial/stale/error states.",
+      "tests": "T24 full Windows workflows/accessibility",
+      "priority": "Must",
+      "status": "NotStarted"
+    },
+    {
+      "id": "FL-024",
+      "milestone": "M5",
+      "epic": "Governance",
+      "feature": "Approvals readiness and audit",
+      "story": "As an owner I control which artifacts are trusted and see changes.",
+      "dependencies": [
+        "FL-018",
+        "FL-019",
+        "FL-023"
+      ],
+      "requirements": [
+        "R14"
+      ],
+      "implementationTasks": [
+        "Immutable config/calibration approval events, market lifecycle, audit browser and exact-hash promotion/rollback."
+      ],
+      "acceptance": "Unapproved hash blocked; failed cohort quarantined independently; old forecast retains old approved artifact.",
+      "tests": "T25 lifecycle/optimistic conflict/audit",
+      "priority": "Must",
+      "status": "NotStarted"
+    },
+    {
+      "id": "FL-025",
+      "milestone": "M5",
+      "epic": "Operations",
+      "feature": "Schedules drift and alerts",
+      "story": "As an owner I learn when data or model quality deteriorates.",
+      "dependencies": [
+        "FL-003",
+        "FL-019",
+        "FL-024"
+      ],
+      "requirements": [
+        "R15"
+      ],
+      "implementationTasks": [
+        "Opt-in source schedules, coalescing/DST rules, stale data/job/disk alerts, rolling calibration drift."
+      ],
+      "acceptance": "Restart coalesces missed work; dedupe alerts; drift cannot self-promote; small sample yields insufficient evidence.",
+      "tests": "T26 scheduler/time/drift/dedup",
+      "priority": "Must",
+      "status": "NotStarted"
+    },
+    {
+      "id": "FL-026",
+      "milestone": "M5",
+      "epic": "Operations",
+      "feature": "Backup restore and retention",
+      "story": "As an owner I can recover evidence and safely prune cache.",
+      "dependencies": [
+        "FL-024"
+      ],
+      "requirements": [
+        "R17"
+      ],
+      "implementationTasks": [
+        "Database/artifact backup manifest, off-host encrypted option, restore drill and referenced-object retention graph."
+      ],
+      "acceptance": "Fresh restore reproduces selected prediction/report; pruning cannot delete referenced payload; licence deletion marks dependent claims.",
+      "tests": "T27 backup/restore/hash/retention",
+      "priority": "Must",
+      "status": "NotStarted"
+    },
+    {
+      "id": "FL-027",
+      "milestone": "M5",
+      "epic": "Security",
+      "feature": "Security and dependency hardening",
+      "story": "As an owner I can run privately with controlled permissions.",
+      "dependencies": [
+        "FL-010",
+        "FL-024"
+      ],
+      "requirements": [
+        "R17",
+        "R18"
+      ],
+      "implementationTasks": [
+        "Auth/secrets/ACLs/source allowlist, import limits, export escaping, SBOM and dependency lock review."
+      ],
+      "acceptance": "No secret in diagnostics; unauthorized API denied; runtime cannot mutate immutable tables/DDL; malicious input tests pass.",
+      "tests": "T28 security/threat/dependency",
+      "priority": "Must",
+      "status": "NotStarted"
+    },
+    {
+      "id": "FL-028",
+      "milestone": "M6",
+      "epic": "Release",
+      "feature": "Packaging and migrations",
+      "story": "As an owner I install and upgrade a verifiable personal release.",
+      "dependencies": [
+        "FL-023",
+        "FL-025",
+        "FL-026",
+        "FL-027"
+      ],
+      "requirements": [
+        "R17"
+      ],
+      "implementationTasks": [
+        "Windows publish/service/client package, PostgreSQL setup, migration bundle, manifests and clean-machine smoke."
+      ],
+      "acceptance": "Fresh install and N-1 upgrade run core journey; backup verified before migration; rollback/restore rehearsed.",
+      "tests": "T29 clean installation/upgrade/recovery",
+      "priority": "Must",
+      "status": "NotStarted"
+    },
+    {
+      "id": "FL-029",
+      "milestone": "M6",
+      "epic": "Validation",
+      "feature": "Multi-league empirical validation",
+      "story": "As an owner I can distinguish validated from experimental markets.",
+      "dependencies": [
+        "FL-019",
+        "FL-020",
+        "FL-021",
+        "FL-024"
+      ],
+      "requirements": [
+        "R08",
+        "R11",
+        "R14"
+      ],
+      "implementationTasks": [
+        "Freeze cohorts/holdout, run evaluation and model cards for at least2 leagues, inspect coverage/calibration/fallbacks."
+      ],
+      "acceptance": "Per-cohort promotion criteria met or candidate stays experimental; no unsupported blanket accuracy claim.",
+      "tests": "T30 registered statistical evaluation",
+      "priority": "Must",
+      "status": "NotStarted"
+    },
+    {
+      "id": "FL-030",
+      "milestone": "M6",
+      "epic": "Desktop",
+      "feature": "Accessibility and localization",
+      "story": "As a user I operate with keyboard and my display culture.",
+      "dependencies": [
+        "FL-023",
+        "FL-028"
+      ],
+      "requirements": [
+        "R16"
+      ],
+      "implementationTasks": [
+        "en-GB/pt-BR resources, DPI/high contrast, numeric tables for charts and offline/reconnect testing."
+      ],
+      "acceptance": "100/125/150/200%DPI and keyboard journeys pass; invariant storage unaffected by comma decimals.",
+      "tests": "T31 UX/DPI/culture",
+      "priority": "Must",
+      "status": "NotStarted"
+    },
+    {
+      "id": "FL-031",
+      "milestone": "M6",
+      "epic": "Quality",
+      "feature": "Performance and release verification",
+      "story": "As an owner I know the supported workload and remaining limits.",
+      "dependencies": [
+        "FL-025",
+        "FL-028",
+        "FL-029",
+        "FL-030"
+      ],
+      "requirements": [
+        "R17",
+        "R20"
+      ],
+      "implementationTasks": [
+        "Benchmark reference dataset/hardware, query plans/resource caps, full regression and release evidence."
+      ],
+      "acceptance": "Targets met or explicit accepted scoped limit; no skipped Must gate; release hash matches tested artifacts.",
+      "tests": "T32 load/cancellation/full release",
+      "priority": "Must",
+      "status": "NotStarted"
+    },
+    {
+      "id": "FL-032",
+      "milestone": "M6",
+      "epic": "Closure",
+      "feature": "Handover and finish v1.0",
+      "story": "As an owner I can operate the finished project without chat history.",
+      "dependencies": [
+        "FL-011",
+        "FL-031"
+      ],
+      "requirements": [
+        "R20"
+      ],
+      "implementationTasks": [
+        "Complete user/operator docs, release notes, known issues, maintenance calendar, inventory and signed closure checklist."
+      ],
+      "acceptance": "All Must tasks traced to merged/tested evidence; clean checkout/runbook rehearsal succeeds; owner acceptance recorded.",
+      "tests": "T33 closure audit and handover",
+      "priority": "Must",
+      "status": "NotStarted"
+    },
+    {
+      "id": "FL-033",
+      "milestone": "M7",
+      "epic": "Extension",
+      "feature": "Advanced de-vig methods",
+      "story": "As an analyst I can compare justified margin-removal assumptions.",
+      "dependencies": [
+        "FL-010",
+        "FL-019"
+      ],
+      "requirements": [
+        "R06"
+      ],
+      "implementationTasks": [
+        "Power/odds-ratio and optionally Shin only with full numerical specification/oracles",
+        "sensitivity report."
+      ],
+      "acceptance": "Feasible roots/tails and input failures tested; methods clearly labelled; old snapshots unaffected.",
+      "tests": "T34 de-vig numerical fixture",
+      "priority": "Should",
+      "status": "NotStarted"
+    },
+    {
+      "id": "FL-034",
+      "milestone": "M7",
+      "epic": "Extension",
+      "feature": "Additional ML and source adapters",
+      "story": "As an owner I extend data/models without destabilising baseline.",
+      "dependencies": [
+        "FL-024",
+        "FL-029"
+      ],
+      "requirements": [
+        "R01",
+        "R11"
+      ],
+      "implementationTasks": [
+        "New source admission or candidate protocol, licence/timing evidence, isolated experiment and review."
+      ],
+      "acceptance": "No adapter auto-enabled without rights; no model promoted without same evaluation gates.",
+      "tests": "T35 adapter/model extension contracts",
+      "priority": "Should",
+      "status": "NotStarted"
+    }
+  ]
+}

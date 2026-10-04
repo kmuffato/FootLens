@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Independent analytic documentation/implementation acceptance vectors; not results from FootLens application code.",
+  "odds": {
+    "decimal": [
+      "2.00",
+      "3.30",
+      "4.00"
+    ],
+    "implied": [
+      "0.5",
+      "0.303030303030303030303030303030303030303030303030303030303030",
+      "0.25"
+    ],
+    "bookSum": "1.05303030303030303030303030303030303030303030303030303030303",
+    "overround": "0.0530303030303030303030303030303030303030303030303030303030303",
+    "fair": [
+      "0.474820143884892086330935251798561151079136690647482014388489",
+      "0.287769784172661870503597122302158273381294964028776978417266",
+      "0.237410071942446043165467625899280575539568345323741007194245"
+    ],
+    "modelHome": "0.52",
+    "homeValueDelta": "0.045179856115107913669064748201438848920863309352517985611511",
+    "grossBinaryEV": "0.04",
+    "commissionRate": "0.02",
+    "netBinaryEV": "0.0296"
+  },
+  "poisson": {
+    "homeMean": "1.2",
+    "awayMean": "0.8",
+    "p00": "0.135335283236612691893999494972484403407631545909575881468159",
+    "over2_5": "0.323323583816936540530002525137577982961842270452120592659205",
+    "btts": "0.384812107207189003818919502873699147502192313730134105583890"
+  },
+  "metrics": {
+    "probabilities": [
+      "0.5",
+      "0.3",
+      "0.2"
+    ],
+    "observedIndex": 0,
+    "multiclassBrier": "0.38",
+    "logLoss": "0.693147180559945309417232121458176568075500134360255254120680"
+  },
+  "settlement": [
+    {
+      "market": "Over",
+      "lineQuarter": 11,
+      "total": 2,
+      "odds": "2",
+      "expectedNet": "-1"
+    },
+    {
+      "market": "Over",
+      "lineQuarter": 11,
+      "total": 3,
+      "odds": "2",
+      "expectedNet": "0.5"
+    },
+    {
+      "market": "Over",
+      "lineQuarter": 11,
+      "total": 4,
+      "odds": "2",
+      "expectedNet": "1"
+    },
+    {
+      "market": "Under",
+      "lineQuarter": 11,
+      "total": 3,
+      "odds": "2",
+      "expectedNet": "-0.5"
+    },
+    {
+      "market": "HomeHandicap",
+      "lineQuarter": -1,
+      "goalDifference": 0,
+      "odds": "2",
+      "expectedNet": "-0.5"
+    }
+  ]
+}
