@@ -241,7 +241,7 @@ The analyst's primary sequence is import → resolve issues → choose fixture a
 
 ## 5. Release plan
 
-v1.0 is a private Windows 11 x64 release, local-first, with Tier 0 legacy comparison and validated Tier 1, all eleven workspaces, en-US/pt-BR resources, backup/restore, signed packaging and documented rollback. The source adapters and protocol must demonstrate at least two separately reported leagues. EPL and Championship are a proposed validation pair; the dataset decision belongs to P2.
+v1.0 is a private Windows 11 x64 release, local-first, with Tier 0 legacy comparison and validated Tier 1, all eleven workspaces, en-GB resource, backup/restore, signed packaging and documented rollback. The source adapters and protocol must demonstrate at least two separately reported leagues. EPL and Championship are a proposed validation pair; the dataset decision belongs to P2.
 
 No date is promised before P1/P2 reveal numerical and data effort. Exit criteria are the Must requirements, phase gates, numerical contracts, minimum evidence cohorts, accessibility checks and release audit. Insufficient data does not permit an unsupported claim of model superiority. Tier 0 remains the default until a candidate meets promotion rules; if Tier 1 has not passed required functionality or evaluation, v1 release is blocked or its proposed scope requires an explicit decision.
 
